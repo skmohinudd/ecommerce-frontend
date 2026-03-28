@@ -1,0 +1,58 @@
+.cart-container {
+  padding: 20px;
+}
+
+.empty {
+  color: red;
+}
+
+.cart-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Card style */
+.cart-card {
+  width: 220px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.cart-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+
+/* Button */
+.cart-card button {
+  background: #ff4757;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-card button:hover {
+  background: red;
+}
+
+/* Checkout section */
+.checkout {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.checkout button {
+  background: green;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
