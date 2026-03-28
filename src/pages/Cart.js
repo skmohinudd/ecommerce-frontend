@@ -9,10 +9,11 @@ function Cart() {
     return acc + item.price * (item.qty || 1);
   }, 0);
 
-  // ✅ FIX: function must be ABOVE return
   const handleCheckout = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const API_URL = "http://localhost:5000";
+
+      const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -21,6 +22,10 @@ function Cart() {
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Checkout failed");
+      }
 
       alert("Order placed successfully!");
       console.log(data);
@@ -41,15 +46,12 @@ function Cart() {
           <div className="cart-grid">
             {cart.map((item) => (
               <div className="cart-card" key={item.id}>
-                {/* Image */}
                 <img src={item.image} alt={item.name} />
 
-                {/* Details */}
                 <h3>{item.name}</h3>
                 <p>₹{item.price}</p>
                 <p>Qty: {item.qty}</p>
 
-                {/* Remove button */}
                 <button onClick={() => removeFromCart(item.id)}>
                   Remove
                 </button>
@@ -57,11 +59,9 @@ function Cart() {
             ))}
           </div>
 
-          {/* Checkout Section */}
           <div className="checkout">
             <h2>Total: ₹{total.toFixed(2)}</h2>
 
-            {/* ✅ FIX: connect function */}
             <button onClick={handleCheckout}>
               Checkout
             </button>
