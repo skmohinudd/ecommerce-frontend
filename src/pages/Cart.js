@@ -11,7 +11,7 @@ function Cart() {
 
   const handleCheckout = async () => {
     try {
-      const API_URL = "http://localhost:5000";
+      const API_URL = "";
 
       const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
