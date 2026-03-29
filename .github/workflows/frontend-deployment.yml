@@ -11,8 +11,8 @@ on:
       - "package-lock.json"
       - "Dockerfile"
       - ".dockerignore"
-      - "k8s/frontend-deployment.yaml"
-      - "k8s/frontend-service.yaml"
+      - "k8s/frontend-deployment.yml"
+      - "k8s/frontend-service.yml"
       - ".github/workflows/frontend-deploy.yml"
   workflow_dispatch:
 
@@ -77,7 +77,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          sed -i "s|IMAGE_FRONTEND|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/frontend-deployment.yaml
+          sed -i "s|IMAGE_FRONTEND|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/frontend-deployment.yml
 
       - name: Create namespace if missing
         run: |
@@ -85,6 +85,6 @@ jobs:
 
       - name: Deploy frontend to EKS
         run: |
-          kubectl apply -f k8s/frontend-deployment.yaml
-          kubectl apply -f k8s/frontend-service.yaml
+          kubectl apply -f k8s/frontend-deployment.yml
+          kubectl apply -f k8s/frontend-service.yml
           kubectl rollout status deployment/frontend -n $K8S_NAMESPACE --timeout=180s
