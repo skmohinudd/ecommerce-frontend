@@ -1,0 +1,12 @@
+replicaCount: 2
+
+image:
+  repository: 077419561607.dkr.ecr.us-east-1.amazonaws.com/frontendapp
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 80
