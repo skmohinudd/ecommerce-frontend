@@ -12,7 +12,7 @@ on:
       - "Dockerfile"
       - ".dockerignore"
       - "helm/frontend/**"
-      - ".github/workflows/frontend-deploy.yml"
+      - ".github/workflows/frontend-deployment.yml"
   workflow_dispatch:
 
 permissions:
