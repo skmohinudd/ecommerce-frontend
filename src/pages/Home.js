@@ -43,7 +43,7 @@ function Home() {
             key={product.id}
             product={{
               id: product.id,
-              name: product.title,
+              name: product.title ?? product.name,
               price: product.price,
               image: product.image,
             }}

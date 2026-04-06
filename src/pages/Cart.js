@@ -11,9 +11,7 @@ function Cart() {
 
   const handleCheckout = async () => {
     try {
-      const API_URL = "";
-
-      const res = await fetch(`${API_URL}/api/orders`, {
+      const res = await fetch(`/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +29,7 @@ function Cart() {
       console.log(data);
     } catch (err) {
       console.error("Checkout error:", err);
-      alert("Backend not connected yet ❌");
+      alert(`Checkout failed: ${err.message}`);
     }
   };
 
@@ -62,9 +60,7 @@ function Cart() {
           <div className="checkout">
             <h2>Total: ₹{total.toFixed(2)}</h2>
 
-            <button onClick={handleCheckout}>
-              Checkout
-            </button>
+            <button onClick={handleCheckout}>Checkout</button>
           </div>
         </>
       )}
