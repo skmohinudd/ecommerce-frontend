@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { createOrder } from "../api";
 import "./Cart.css";
 
 function Cart() {
@@ -9,27 +10,41 @@ function Cart() {
     return acc + item.price * (item.qty || 1);
   }, 0);
 
+  const totalQuantity = cart.reduce((acc, item) => {
+    return acc + (item.qty || 1);
+  }, 0);
+
   const handleCheckout = async () => {
     try {
-      const res = await fetch(`/api/orders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cart }),
+      console.log("[frontend] checkout clicked", {
+        event: "frontend_checkout_clicked",
+        item_count: cart.length,
+        total_quantity: totalQuantity,
+        total_amount: total,
       });
 
-      const data = await res.json();
+      const data = await createOrder({ cart });
 
-      if (!res.ok) {
-        throw new Error(data.error || "Checkout failed");
-      }
+      console.log("[frontend] checkout success", {
+        event: "frontend_checkout_success",
+        item_count: cart.length,
+        total_quantity: totalQuantity,
+        total_amount: total,
+        order_id: data?.order?._id || null,
+      });
 
       alert("Order placed successfully!");
       console.log(data);
     } catch (err) {
-      console.error("Checkout error:", err);
-      alert(`Checkout failed: ${err.message}`);
+      console.error("[frontend] checkout failed", {
+        event: "frontend_checkout_failed",
+        item_count: cart.length,
+        total_quantity: totalQuantity,
+        total_amount: total,
+        error_message: err?.response?.data?.error || err.message,
+      });
+
+      alert(`Checkout failed: ${err?.response?.data?.error || err.message}`);
     }
   };
 

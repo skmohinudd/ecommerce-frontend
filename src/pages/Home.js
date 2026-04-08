@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import { getProducts } from "../api";
 import "./Home.css";
 
 function Home() {
@@ -10,19 +11,31 @@ function Home() {
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        console.log("[frontend] home page product load started", {
+          event: "frontend_home_product_load_started",
+        });
+
         setLoading(true);
         setError("");
 
-        const res = await fetch("/api/products");
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || "Failed to fetch products");
-        }
+        const data = await getProducts();
 
-        const data = await res.json();
         setProducts(data);
+
+        console.log("[frontend] home page product load success", {
+          event: "frontend_home_product_load_success",
+          product_count: Array.isArray(data) ? data.length : 0,
+        });
       } catch (err) {
-        setError(err.message || "Something went wrong");
+        const message =
+          err?.response?.data?.error || err.message || "Something went wrong";
+
+        setError(message);
+
+        console.error("[frontend] home page product load failed", {
+          event: "frontend_home_product_load_failed",
+          error_message: message,
+        });
       } finally {
         setLoading(false);
       }
